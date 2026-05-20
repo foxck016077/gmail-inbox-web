@@ -4,6 +4,12 @@ Web wrapper for [`foxck/gmail-inbox-intel`](https://github.com/foxck016077/apify
 
 This preview ships with sample data. Google one-click sign-in (gmail.readonly scope) lands in the next milestone.
 
+## Deploy
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Ffoxck016077%2Fgmail-inbox-web&project-name=gmail-inbox-web&repository-name=gmail-inbox-web)
+
+No env vars required for the preview build. OAuth env vars get added on the next milestone (see [issue #1](https://github.com/foxck016077/gmail-inbox-web/issues/1) once it exists).
+
 ## Stack
 
 - Next.js 16.2.6 App Router (Turbopack)
