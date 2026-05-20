@@ -1,36 +1,41 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# gmail-inbox-web
 
-## Getting Started
+Web wrapper for [`foxck/gmail-inbox-intel`](https://github.com/foxck016077/apify-gmail-inbox-intel) — read-only Friday triage of stalled Gmail threads ranked by silent days. v0.2 of the Gmail Inbox Intelligence project (Apify Actor was v0.1, developer-facing).
 
-First, run the development server:
+This preview ships with sample data. Google one-click sign-in (gmail.readonly scope) lands in the next milestone.
+
+## Stack
+
+- Next.js 16.2.6 App Router (Turbopack)
+- React 19.2
+- Tailwind v4
+- TypeScript strict
+
+## Local dev
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# → http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Routes:
+- `/` — landing + stalled threads table (sample data)
+- `/api/threads.csv` — CSV download endpoint
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Roadmap
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- [x] Sample data UI, sort by days silent
+- [x] CSV download (UTF-8 BOM for Excel)
+- [ ] Google OAuth (gmail.readonly only, refresh_token in-memory)
+- [ ] Server action `getStalledThreads()` calling Gmail API
+- [ ] Plausible analytics (privacy-first, no cookie banner)
+- [ ] Custom domain
 
-## Learn More
+See [SPEC at upstream repo](https://github.com/foxck016077/apify-gmail-inbox-intel#roadmap) for full design.
 
-To learn more about Next.js, take a look at the following resources:
+Have an opinion before this ships? [Discussion #16](https://github.com/foxck016077/apify-gmail-inbox-intel/discussions/16) is open.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## License
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MIT
