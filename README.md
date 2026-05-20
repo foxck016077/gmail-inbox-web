@@ -1,8 +1,16 @@
 # gmail-inbox-web
 
+**You're losing deals you didn't know were dying.** This web app opens your Gmail (read-only) and drops a one-screen list of which client threads have gone silent past their SLA — oldest cold lead first, days since last reply, original deal size.
+
 Web wrapper for [`foxck/gmail-inbox-intel`](https://github.com/foxck016077/apify-gmail-inbox-intel) — read-only Friday triage of stalled Gmail threads ranked by silent days. v0.2 of the Gmail Inbox Intelligence project (Apify Actor was v0.1, developer-facing).
 
 This preview ships with sample data. Google one-click sign-in (gmail.readonly scope) lands in the next milestone.
+
+## Three ways to use it
+
+- **$0 self-host (this repo)** — clone, deploy on Vercel, connect your own Google OAuth client. MIT licensed.
+- **$19 packaged self-host bundle** ([Gumroad](https://foxck.gumroad.com/l/freelancer-gmail-tracking-pack)) — Docker Compose, 5-min OAuth setup, no Vercel required, $0/run after setup.
+- **$99 done-for-you triage report** — email after purchase of either Gumroad tier (subject "DFY Triage"). I run the scan on your Gmail (refresh-token OAuth, read-only, never stored), send back a 1-page Friday triage report within 7 days: top 10 cold threads, days silent, suggested re-engage angle.
 
 ## Deploy
 
