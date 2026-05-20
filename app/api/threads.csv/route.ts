@@ -1,4 +1,4 @@
-import { getMockThreads } from "@/app/lib/mock";
+import { getThreadsForCurrentUser } from "@/app/lib/threads";
 
 const CSV_HEADER = "subject,counterparty,last_reply_at,days_silent,sla_breach,thread_link";
 
@@ -10,7 +10,7 @@ function escape(s: string): string {
 }
 
 export async function GET() {
-  const threads = getMockThreads();
+  const { threads } = await getThreadsForCurrentUser();
   const rows = threads.map((t) =>
     [
       escape(t.subject),

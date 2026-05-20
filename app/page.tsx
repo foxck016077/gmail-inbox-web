@@ -1,17 +1,35 @@
 import { ThreadTable } from "./components/ThreadTable";
-import { getMockThreads } from "./lib/mock";
+import { AuthControls } from "./components/AuthControls";
+import { getThreadsForCurrentUser } from "./lib/threads";
 
-export default function Home() {
-  const threads = getMockThreads();
+export const dynamic = "force-dynamic";
+
+export default async function Home() {
+  const { threads, source, userEmail, error } = await getThreadsForCurrentUser();
   const breachCount = threads.filter((t) => t.sla_breach).length;
+  const isLive = source === "live";
 
   return (
     <div className="min-h-screen bg-zinc-50 font-sans dark:bg-black">
       <main className="mx-auto max-w-5xl px-6 py-12 sm:py-16">
         <header className="mb-12">
-          <div className="mb-2 inline-block rounded-full bg-amber-100 px-3 py-1 text-xs font-medium text-amber-900 dark:bg-amber-950 dark:text-amber-200">
-            Preview · sample data · Google sign-in coming
+          <div className="mb-6 flex items-center justify-between gap-4">
+            <div
+              className={
+                isLive
+                  ? "inline-block rounded-full bg-emerald-100 px-3 py-1 text-xs font-medium text-emerald-900 dark:bg-emerald-950 dark:text-emerald-200"
+                  : "inline-block rounded-full bg-amber-100 px-3 py-1 text-xs font-medium text-amber-900 dark:bg-amber-950 dark:text-amber-200"
+              }
+            >
+              {isLive
+                ? `Live · ${userEmail}`
+                : userEmail
+                  ? "Sample data · sign in to load your inbox"
+                  : "Preview · sample data · sign in for live results"}
+            </div>
+            <AuthControls />
           </div>
+
           <h1 className="text-4xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50 sm:text-5xl">
             See which client emails went cold this week.
           </h1>
@@ -20,6 +38,12 @@ export default function Home() {
             threads, ranked by silent days. No outbound automation, no scraping, no mailbox cache.
           </p>
         </header>
+
+        {error && (
+          <div className="mb-6 rounded-md border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-900 dark:border-rose-900 dark:bg-rose-950 dark:text-rose-200">
+            {error}
+          </div>
+        )}
 
         <section className="mb-6 flex flex-wrap items-end justify-between gap-4">
           <div>
@@ -84,7 +108,7 @@ export default function Home() {
         </section>
 
         <footer className="mt-12 border-t border-zinc-200 pt-6 text-xs text-zinc-500 dark:border-zinc-800">
-          v0.2 preview · sample data only · no Gmail data is collected on this preview build
+          v0.2 · {isLive ? "live data" : "sample data only"} · no Gmail data is stored on the server
         </footer>
       </main>
     </div>

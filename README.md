@@ -21,20 +21,41 @@ No env vars required for the preview build. OAuth env vars get added on the next
 
 ```bash
 npm install
+cp .env.example .env.local
+# fill in AUTH_GOOGLE_ID / AUTH_GOOGLE_SECRET / AUTH_SECRET (see OAuth setup below)
 npm run dev
 # → http://localhost:3000
 ```
 
+Without env vars the page renders with sample data (the "Continue with Google" button will return a 400 until OAuth is wired).
+
 Routes:
-- `/` — landing + stalled threads table (sample data)
-- `/api/threads.csv` — CSV download endpoint
+- `/` — landing + stalled threads table (live when signed in, sample otherwise)
+- `/api/auth/[...nextauth]` — NextAuth v5 handlers (Google provider)
+- `/api/threads.csv` — CSV download endpoint (uses the same source as `/`)
+
+## OAuth setup (one-time, project owner)
+
+1. Google Cloud Console → APIs & Services → Credentials → Create Credentials → OAuth client ID
+   - Application type: Web application
+   - Authorized JavaScript origins: `https://yourdomain.com` (or the Vercel preview URL)
+   - Authorized redirect URI: `https://yourdomain.com/api/auth/callback/google`
+2. Enable Gmail API on the same project (APIs & Services → Library → Gmail API → Enable)
+3. OAuth consent screen → scopes → add `https://www.googleapis.com/auth/gmail.readonly`
+4. Copy client ID + client secret into Vercel project env vars:
+   - `AUTH_GOOGLE_ID`
+   - `AUTH_GOOGLE_SECRET`
+   - `AUTH_SECRET` (generate: `openssl rand -base64 32`)
+5. Until OAuth consent is verified for sensitive scopes, the app is in "Testing" mode; add specific Gmail addresses under Test users to let them sign in.
 
 ## Roadmap
 
 - [x] Sample data UI, sort by days silent
 - [x] CSV download (UTF-8 BOM for Excel)
-- [ ] Google OAuth (gmail.readonly only, refresh_token in-memory)
-- [ ] Server action `getStalledThreads()` calling Gmail API
+- [x] NextAuth v5 + Google provider wired (gmail.readonly scope, refresh_token in JWT only, never on disk)
+- [x] `app/lib/gmail.ts` — real Gmail API call with `metadata` format, 5-concurrent pool
+- [x] `app/lib/threads.ts` — `getThreadsForCurrentUser()` returns live or mock based on session
+- [ ] OAuth consent verification (required to publish app for non-test users with sensitive scope)
 - [ ] Plausible analytics (privacy-first, no cookie banner)
 - [ ] Custom domain
 
